@@ -9,12 +9,13 @@ $result = $conn->query($sql);
 
 $dir    = "./flags/";
 $files = scandir($dir);
+
 for ($i = 2; $i < count($files); $i++) {
      $image = $dir.$files[$i];
      $type = pathinfo($image, PATHINFO_EXTENSION);
      $data = file_get_contents($image);
      $dataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
-     $sql = "INSERT INTO flags (id, flag) VALUES ('$i','$dataUri')";
+     $sql = "INSERT INTO flags (id, flag, name) VALUES ('$i','$dataUri', '$files[$i]')";
      $result = $conn->query($sql);
 }
 $conn->close();
