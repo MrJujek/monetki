@@ -60,7 +60,7 @@
             <td>
                 <select name="material" id="material">
                     <?php
-                        $sql = "SELECT * FROM `material`";
+                        $sql = "SELECT * FROM `materials`";
                         $res = $conn->query($sql);
                     
                         $response = array();
@@ -84,4 +84,5 @@
     </table>
 </div>
 
-<a href="/makeFlags.php">Go to make flags</a>
+<a href="/makeFlags.php">Make flags</a>
+<a href="/makeMaterials.php">Make materials</a>

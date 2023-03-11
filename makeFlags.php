@@ -1,4 +1,6 @@
-<a href="/">Return to index</a>
+<a href="/">Index</a>
+<a href="/makeMaterials.php">Make materials</a>
+
 <?php
 include "./database/DatabaseData.php";
 $conn = new mysqli($servername, $username, $password, $database);
