@@ -1,4 +1,5 @@
 <link href="./style/style.css" rel="stylesheet" type="text/css">
+<script src="./scripts/add.js" defer></script>
 <?php
     include "./database/DatabaseData.php";
     $conn = new mysqli($servername, $username, $password, $database);
@@ -77,9 +78,9 @@
                 </select>
             </td>
             <td>
-                <input type="text" name="year" id="year">
+                <input type="number" name="year" id="year">
             </td>
-            <td><img src="./img/confirm.png" alt="confirm"></td>
+            <td class="add_confirm" id="add_confirm"><img src="./img/confirm.png" alt="confirm"></td>
         </tr>
     </table>
 </div>
