@@ -49,7 +49,8 @@ function add_confirm() {
                 let year = document.createElement('td');
                 let button_delete = document.createElement('td');
 
-                flag.innerHTML = data.flag;
+                flag.innerHTML = '<img src="./flags/' + data.flag + '" alt="flag">';
+                flag.className = 'flags';
                 denomination.innerHTML = data.denomination;
                 category.innerHTML = data.category;
                 material.innerHTML = data.material;
