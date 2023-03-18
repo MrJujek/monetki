@@ -6,7 +6,7 @@
     if ($conn->connect_errno) die('Brak połączenia z MySQL');
 ?>
 <div class="show">
-    <table border=1>
+    <table border=1 id="main_table">
         <tr>
             <th>Flag</th>
             <th>Denominate</th>
@@ -15,10 +15,52 @@
             <th>Year</th>
             <th>Delete</th>
         </tr>
+        <?php
+            $sql = "SELECT * FROM `data`";
+            $res = $conn->query($sql);
+        
+            $response = array();
+            while ($row = mysqli_fetch_assoc($res)) {
+                $response[] = $row;
+            }
+
+            for ($i = 0; $i < count($response); $i++) {
+                echo '<tr>';
+                    echo '<td class="flags">';
+                        $sql = "SELECT * FROM `flags` WHERE id = ".$response[$i]['flag_id'];
+                        $res = $conn->query($sql);
+                        $flag = array();
+                        while ($row = mysqli_fetch_assoc($res)) {
+                            $flag[] = $row;
+                        }
+                        echo '<img src='.$flag[0]['flag'].' alt='.$flag[0]['name'].'>';
+                    echo '</td>';
+                    echo '<td>';
+                        echo $response[$i]['denomination'];
+                    echo '</td>';
+                    echo '<td>';
+                        echo $response[$i]['category'];
+                    echo '</td>';
+                    echo '<td>';
+                        $sql = "SELECT * FROM `materials` WHERE id = ".$response[$i]['material_id'];
+                        $res = $conn->query($sql);
+                        $material = array();
+                        while ($row = mysqli_fetch_assoc($res)) {
+                            $material[] = $row;
+                        }
+                        echo $material[0]['material'];
+                    echo '</td>';
+                    echo '<td>';
+                        echo $response[$i]['year'];
+                    echo '</td>';
+                    echo '<td class="delete_confirm" id="delete'.$response[$i]['id'].'"><img src="./img/delete.jpg" alt="delete"></td>';
+                echo '</tr>';
+            }
+        ?>
     </table>
 </div>
 <div class="add">
-    Dodawanie rekordu
+    Add new coin
     <table border=1>
         <tr>
             <th>Flag</th>
@@ -40,13 +82,9 @@
                             $response[] = $row;
                         }
 
-                        echo '<pre>';
-                        var_dump($response);
-                        echo '</pre>';
-
                         for ($i = 0; $i < count($response); $i++) {
                             echo '<option>';
-                                echo $response[$i]['name'];
+                                echo explode(".",$response[$i]['name'])[0];
                             echo '</option>';
                         }
                     ?>
@@ -80,7 +118,7 @@
             <td>
                 <input type="number" name="year" id="year">
             </td>
-            <td class="add_confirm" id="add_confirm"><img src="./img/confirm.png" alt="confirm"></td>
+            <td class="add_confirm" onclick="add_confirm()"><img src="./img/confirm.png" alt="confirm"></td>
         </tr>
     </table>
 </div>

@@ -1,18 +1,8 @@
-.add {
-  margin-top: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .show {
@@ -31,7 +21,65 @@
           justify-content: center;
 }
 
-.add_confirm {
+.show #main_table tr:not(:first-child) {
+  height: 60px;
+}
+
+.show #main_table th {
+  padding: 0px 10px;
+}
+
+.show #main_table td {
+  height: 100%;
+  text-align: center;
+}
+
+.show #main_table td.flags img {
+  max-width: 80px;
+  max-height: 40px;
+  margin: 10px;
+}
+
+.show #main_table td.delete_confirm {
+  cursor: pointer;
+}
+
+.add {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.add table tr:not(:first-child) {
+  height: 40px;
+}
+
+.add table th {
+  padding: 0px 10px;
+}
+
+.add table td {
+  padding: 0px 10px;
+  height: 100%;
+  text-align: center;
+}
+
+.add table td input {
+  width: 100px;
+}
+
+.add table td.add_confirm {
   cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

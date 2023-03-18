@@ -17,7 +17,7 @@ for ($i = 2; $i < count($files); $i++) {
      $type = pathinfo($image, PATHINFO_EXTENSION);
      $data = file_get_contents($image);
      $dataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
-     $sql = "INSERT INTO flags (id, flag, name) VALUES ('$i','$dataUri', '$files[$i]')";
+     $sql = "INSERT INTO flags (id, flag, name) VALUES ('".($i-2)."','$dataUri', '$files[$i]')";
      $result = $conn->query($sql);
 }
 $conn->close();

@@ -1,9 +1,7 @@
-.add {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .show {
@@ -11,8 +9,64 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    #main_table {
+        & tr:not(:first-child) {
+            height: 60px;
+        }
+
+        th {
+            padding: 0px 10px;
+        }
+
+        td {
+            height: 100%;
+            text-align: center;
+
+            &.flags {
+                img {
+                    max-width: 80px;
+                    max-height: 40px;
+                    margin: 10px;
+                }
+            }
+
+            &.delete_confirm {
+                cursor: pointer;
+            }
+        }
+    }
+
 }
 
-.add_confirm {
-    cursor: pointer;
+.add {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    table {
+        & tr:not(:first-child) {
+            height: 40px;
+        }
+
+        th {
+            padding: 0px 10px;
+        }
+
+        td {
+            padding: 0px 10px;
+            height: 100%;
+            text-align: center;
+
+            input {
+                width: 100px;
+            }
+
+            &.add_confirm {
+                cursor: pointer;
+            }
+        }
+    }
 }
