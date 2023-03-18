@@ -10,7 +10,7 @@ for (let i = 0; i < deleteButtons.length; i++) {
 
 let id = lastId;
 function add_confirm() {
-    console.log('add');
+    console.log('add_confirm');
 
     id++;
 
@@ -39,7 +39,7 @@ function add_confirm() {
             body: formData
         })
             .then(() => {
-                console.log('success');
+                console.log('Successfuly added');
 
                 let row = document.createElement('tr');
                 let flag = document.createElement('td');
@@ -76,12 +76,12 @@ function add_confirm() {
 function delete_confirm(element) {
     console.log('delete_confirm');
 
-    console.log(element.id);
+    let id = (element.id).replace('delete', '');
 
     let formData = new FormData()
-    formData.append('data', JSON.stringify({ id: element.id }))
+    formData.append('data', JSON.stringify({ id: id }))
 
-    if (JSON.stringify({ id: element.id })) {
+    if (JSON.stringify({ id: id })) {
         console.log('fetch to delete');
         fetch('https://dev.juliandworzycki.pl/deleteData.php', {
             method: 'POST',
