@@ -136,9 +136,12 @@ function delete_confirm(element) {
 let elementToChange
 let oldElement;
 function row_change(element) {
+    console.log('row_change');
     elementToChange = element.parentElement;
 
     if (isRowSelected == false) {
+        console.log('isRowSelected == false');
+
         oldElement = elementToChange.cloneNode(true)
         oldElement.className = 'oldElement';
         elementToChange.parentElement.insertBefore(oldElement, elementToChange);
@@ -146,11 +149,6 @@ function row_change(element) {
         oldElement.style.display = 'none';
         oldElement = document.getElementById('oldElement');
         elementToChange.className = 'selected';
-        console.log('row_change');
-
-        // for (let i = 0; i < element.parentElement.children.length; i++) {
-        //     console.log(element.parentElement.children[i]);
-        // }
 
         //flag
         let oldFlag = (element.parentElement.children[0].children[0].alt).split(".")[0];
@@ -212,8 +210,7 @@ function row_change(element) {
         button.id = "add" + element.parentElement.children[0].id.replace('flag', '');
         button.innerHTML = '<img src="./img/confirm.png" alt="confirm">';
         button.addEventListener("click", function (e) {
-            console.log('row_confirm');
-            //row_confirm(this)
+            row_confirm(this)
             e.stopPropagation();
         })
         element.parentElement.appendChild(button);
@@ -226,8 +223,6 @@ function row_change(element) {
 }
 
 document.getElementsByClassName('show')[0].addEventListener("click", (e) => {
-    console.log(oldElement);
-    console.log(elementToChange);
     console.log('show');
     isRowSelected = false;
     e.stopPropagation();
@@ -246,3 +241,58 @@ document.getElementsByClassName('show')[0].addEventListener("click", (e) => {
         document.getElementsByClassName('oldElement')[0].classList.remove('oldElement')
     }
 })
+
+function row_confirm(element) {
+    console.log('row_confirm');
+
+    let flag = element.parentElement.children[0].children[0].value;
+    let denomination = element.parentElement.children[1].children[0].value;
+    let category = element.parentElement.children[2].children[0].value;
+    let material = element.parentElement.children[3].children[0].value;
+    let year = element.parentElement.children[4].children[0].value;
+
+    let originalElement = document.getElementsByClassName('oldElement')[0];
+    originalElement.children[0].innerHTML = '<img src="./flags/' + flag + '.jpg" alt="' + flag + '">';
+    originalElement.children[1].innerHTML = denomination;
+    originalElement.children[2].innerHTML = category;
+    originalElement.children[3].innerHTML = material;
+    originalElement.children[4].innerHTML = year;
+
+    originalElement.children[0].addEventListener("click", function (e) {
+        row_change(this)
+        e.stopPropagation();
+    })
+    originalElement.children[5].addEventListener("click", function (e) {
+        delete_confirm(this)
+        e.stopPropagation();
+    })
+    originalElement.classList.remove('oldElement')
+    originalElement.style.display = 'table-row';
+
+    element.parentElement.remove();
+
+    isRowSelected = false;
+
+    let data = {
+        id: originalElement.children[5].id.replace('delete', ''),
+        flag: flag,
+        denomination: denomination,
+        category: category,
+        material: material,
+        year: year
+    }
+    //console.log(data);
+
+    let formData = new FormData()
+    formData.append('data', JSON.stringify(data))
+    if (JSON.stringify(data)) {
+        console.log('fetch to update');
+        fetch('https://dev.juliandworzycki.pl/updateDatabase.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(() => {
+                console.log('Successfuly updated');
+            })
+    }
+}
