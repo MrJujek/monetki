@@ -11,8 +11,14 @@
     justify-content: center;
 
     #main_table {
+        margin-top: 20px;
+
         & tr:not(:first-child) {
             height: 60px;
+
+            .add_confirm {
+                cursor: pointer;
+            }
         }
 
         th {
@@ -24,6 +30,8 @@
             text-align: center;
 
             &.flags {
+                cursor: pointer;
+
                 img {
                     max-width: 80px;
                     max-height: 40px;

@@ -21,8 +21,16 @@
           justify-content: center;
 }
 
+.show #main_table {
+  margin-top: 20px;
+}
+
 .show #main_table tr:not(:first-child) {
   height: 60px;
+}
+
+.show #main_table tr:not(:first-child) .add_confirm {
+  cursor: pointer;
 }
 
 .show #main_table th {
@@ -32,6 +40,10 @@
 .show #main_table td {
   height: 100%;
   text-align: center;
+}
+
+.show #main_table td.flags {
+  cursor: pointer;
 }
 
 .show #main_table td.flags img {

@@ -1,12 +1,41 @@
+let allFlags = [];
+fetch('https://dev.juliandworzycki.pl/getFlags.php', {
+    method: 'get',
+})
+    .then((response) => { return response.text() })
+    .then((response) => {
+        allFlags = JSON.parse(response).split(',');
+    })
+
+let allMaterials = [];
+fetch('https://dev.juliandworzycki.pl/getMaterials.php', {
+    method: 'get',
+})
+    .then((response) => { return response.text() })
+    .then((response) => {
+        allMaterials = JSON.parse(response).split(',');
+    })
+
 let deleteButtons = document.getElementsByClassName('delete_confirm');
 let lastId = 0;
 for (let i = 0; i < deleteButtons.length; i++) {
     lastId = parseInt((deleteButtons[i].id).replace('delete', ''));
 
-    deleteButtons[i].addEventListener("click", function () {
+    deleteButtons[i].addEventListener("click", function (e) {
         delete_confirm(this)
+        e.stopPropagation();
     })
 }
+
+let flagButtons = document.getElementsByClassName('flags');
+for (let i = 0; i < flagButtons.length; i++) {
+    flagButtons[i].addEventListener("click", function (e) {
+        row_change(this)
+        e.stopPropagation();
+    })
+}
+
+let isRowSelected = false;
 
 let id = lastId;
 function add_confirm() {
@@ -49,17 +78,25 @@ function add_confirm() {
                 let year = document.createElement('td');
                 let button_delete = document.createElement('td');
 
-                flag.innerHTML = '<img src="./flags/' + data.flag + '" alt="flag">';
+                flag.innerHTML = '<img src="./flags/' + data.flag + '" alt="' + data.flag + '">';
                 flag.className = 'flags';
+                flag.id = "flag" + data.id;
+                flag.addEventListener("click", function (e) {
+                    row_change(this)
+                    e.stopPropagation();
+                })
+
                 denomination.innerHTML = data.denomination;
                 category.innerHTML = data.category;
                 material.innerHTML = data.material;
                 year.innerHTML = data.year;
+
                 button_delete.className = 'delete_confirm';
                 button_delete.id = "delete" + data.id;
                 button_delete.innerHTML = '<img src="./img/delete.jpg" alt="delete">';
-                button_delete.addEventListener("click", function () {
+                button_delete.addEventListener("click", function (e) {
                     delete_confirm(this)
+                    e.stopPropagation();
                 })
 
                 row.appendChild(flag);
@@ -95,3 +132,117 @@ function delete_confirm(element) {
 
     element.parentElement.remove();
 }
+
+let elementToChange
+let oldElement;
+function row_change(element) {
+    elementToChange = element.parentElement;
+
+    if (isRowSelected == false) {
+        oldElement = elementToChange.cloneNode(true)
+        oldElement.className = 'oldElement';
+        elementToChange.parentElement.insertBefore(oldElement, elementToChange);
+
+        oldElement.style.display = 'none';
+        oldElement = document.getElementById('oldElement');
+        elementToChange.className = 'selected';
+        console.log('row_change');
+
+        // for (let i = 0; i < element.parentElement.children.length; i++) {
+        //     console.log(element.parentElement.children[i]);
+        // }
+
+        //flag
+        let oldFlag = (element.parentElement.children[0].children[0].alt).split(".")[0];
+        element.parentElement.children[0].innerHTML = '';
+        let select = document.createElement('select');
+        for (let i = 0; i < allFlags.length; i++) {
+            let option = document.createElement('option');
+            option.value = allFlags[i];
+            option.innerHTML = allFlags[i];
+
+            if (oldFlag == allFlags[i]) {
+                option.selected = true;
+            }
+
+            select.appendChild(option);
+        }
+        element.parentElement.children[0].append(select)
+
+        //denominate
+        let input = document.createElement('input');
+        input.value = element.parentElement.children[1].innerHTML;
+        element.parentElement.children[1].innerHTML = '';
+        element.parentElement.children[1].append(input);
+
+        //category
+        input = document.createElement('input');
+        input.value = element.parentElement.children[2].innerHTML;
+        element.parentElement.children[2].innerHTML = '';
+        element.parentElement.children[2].append(input);
+
+        //materials
+        let oldMaterial = element.parentElement.children[3].innerHTML;
+        element.parentElement.children[3].innerHTML = '';
+        select = document.createElement('select');
+        for (let i = 0; i < allMaterials.length; i++) {
+            let option = document.createElement('option');
+            option.value = allMaterials[i];
+            option.innerHTML = allMaterials[i];
+
+            if (oldMaterial == allMaterials[i]) {
+                option.selected = true;
+            }
+
+            select.appendChild(option);
+        }
+        element.parentElement.children[3].append(select)
+
+        //year
+        input = document.createElement('input');
+        input.type = 'number';
+        input.value = element.parentElement.children[4].innerHTML;
+        element.parentElement.children[4].innerHTML = '';
+        element.parentElement.children[4].append(input);
+
+        //button
+        element.parentElement.children[5].remove();
+        let button = document.createElement('td');
+        button.className = 'add_confirm';
+        button.id = "add" + element.parentElement.children[0].id.replace('flag', '');
+        button.innerHTML = '<img src="./img/confirm.png" alt="confirm">';
+        button.addEventListener("click", function (e) {
+            console.log('row_confirm');
+            //row_confirm(this)
+            e.stopPropagation();
+        })
+        element.parentElement.appendChild(button);
+
+
+        oldElement = element.parentElement;
+    }
+
+    isRowSelected = true;
+}
+
+document.getElementsByClassName('show')[0].addEventListener("click", (e) => {
+    console.log(oldElement);
+    console.log(elementToChange);
+    console.log('show');
+    isRowSelected = false;
+    e.stopPropagation();
+
+    if (document.getElementsByClassName('selected')[0]) {
+        document.getElementsByClassName('selected')[0].remove();
+        document.getElementsByClassName('oldElement')[0].style.display = 'table-row';
+        document.getElementsByClassName('oldElement')[0].children[0].addEventListener("click", function (e) {
+            row_change(this)
+            e.stopPropagation();
+        })
+        document.getElementsByClassName('oldElement')[0].children[5].addEventListener("click", function (e) {
+            delete_confirm(this)
+            e.stopPropagation();
+        })
+        document.getElementsByClassName('oldElement')[0].classList.remove('oldElement')
+    }
+})
