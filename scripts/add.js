@@ -87,9 +87,24 @@ function add_confirm() {
                 })
 
                 denomination.innerHTML = data.denomination;
+                denomination.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                })
+
                 category.innerHTML = data.category;
+                category.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                })
+
                 material.innerHTML = data.material;
+                material.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                })
+
                 year.innerHTML = data.year;
+                year.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                })
 
                 button_delete.className = 'delete_confirm';
                 button_delete.id = "delete" + data.id;
@@ -136,8 +151,33 @@ function delete_confirm(element) {
 let elementToChange
 let oldElement;
 function row_change(element) {
+    console.log(element.parentElement);
+    console.log(elementToChange);
+    console.log(oldElement);
     console.log('row_change');
     elementToChange = element.parentElement;
+
+    if (oldElement == element.parentElement) {
+        return
+    }
+
+    if (document.getElementsByClassName('selected')[0]) {
+        console.log('row is selected');
+
+        document.getElementsByClassName('selected')[0].remove();
+        document.getElementsByClassName('oldElement')[0].style.display = 'table-row';
+        document.getElementsByClassName('oldElement')[0].children[0].addEventListener("click", function (e) {
+            row_change(this)
+            e.stopPropagation();
+        })
+        document.getElementsByClassName('oldElement')[0].children[5].addEventListener("click", function (e) {
+            delete_confirm(this)
+            e.stopPropagation();
+        })
+        document.getElementsByClassName('oldElement')[0].classList.remove('oldElement')
+
+        isRowSelected = false;
+    }
 
     if (isRowSelected == false) {
         console.log('isRowSelected == false');
@@ -153,6 +193,7 @@ function row_change(element) {
         //flag
         let oldFlag = (element.parentElement.children[0].children[0].alt).split(".")[0];
         element.parentElement.children[0].innerHTML = '';
+        //console.log(element.parentElement.children[0]);
         let select = document.createElement('select');
         for (let i = 0; i < allFlags.length; i++) {
             let option = document.createElement('option');
@@ -166,6 +207,9 @@ function row_change(element) {
             select.appendChild(option);
         }
         element.parentElement.children[0].append(select)
+        element.parentElement.children[0].addEventListener("click", function (e) {
+            e.stopPropagation();
+        })
 
         //denominate
         let input = document.createElement('input');
@@ -253,10 +297,26 @@ function row_confirm(element) {
 
     let originalElement = document.getElementsByClassName('oldElement')[0];
     originalElement.children[0].innerHTML = '<img src="./flags/' + flag + '.jpg" alt="' + flag + '">';
+
     originalElement.children[1].innerHTML = denomination;
+    originalElement.children[1].addEventListener("click", function (e) {
+        e.stopPropagation();
+    })
+
     originalElement.children[2].innerHTML = category;
+    originalElement.children[2].addEventListener("click", function (e) {
+        e.stopPropagation();
+    })
+
     originalElement.children[3].innerHTML = material;
+    originalElement.children[3].addEventListener("click", function (e) {
+        e.stopPropagation();
+    })
+
     originalElement.children[4].innerHTML = year;
+    originalElement.children[4].addEventListener("click", function (e) {
+        e.stopPropagation();
+    })
 
     originalElement.children[0].addEventListener("click", function (e) {
         row_change(this)
@@ -295,4 +355,10 @@ function row_confirm(element) {
                 console.log('Successfuly updated');
             })
     }
+}
+
+for (let i = 0; i < document.getElementsByClassName('row').length; i++) {
+    document.getElementsByClassName('row')[i].addEventListener("click", function (e) {
+        e.stopPropagation();
+    })
 }

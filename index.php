@@ -35,13 +35,13 @@
                         }
                         echo '<img src='.$flag[0]['flag'].' alt='.$flag[0]['name'].'>';
                     echo '</td>';
-                    echo '<td>';
+                    echo '<td class="row">';
                         echo $response[$i]['denomination'];
                     echo '</td>';
-                    echo '<td>';
+                    echo '<td class="row">';
                         echo $response[$i]['category'];
                     echo '</td>';
-                    echo '<td>';
+                    echo '<td class="row">';
                         $sql = "SELECT * FROM `materials` WHERE id = ".$response[$i]['material_id'];
                         $res = $conn->query($sql);
                         $material = array();
@@ -50,7 +50,7 @@
                         }
                         echo $material[0]['material'];
                     echo '</td>';
-                    echo '<td>';
+                    echo '<td class="row">';
                         echo $response[$i]['year'];
                     echo '</td>';
                     echo '<td class="delete_confirm" id="delete'.$response[$i]['id'].'"><img src="./img/delete.jpg" alt="delete"></td>';
